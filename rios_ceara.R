@@ -1,4 +1,6 @@
-# 1. LIBRARIES
+#Tutorial de apoio: Milos Popovic | https://www.youtube.com/watch?v=piswxAEwnYo
+
+# 1. BIBLIOTECAS
 #-------------
 install.packages("magick")
 install.packages("pacman")
@@ -11,7 +13,7 @@ pacman::p_load(
   rayshader
 )
 
-# 2. COUNTRY BORDERS
+# 2. FRONTEIRAS DO PAÍS
 #-------------------
 #
 path <- getwd()
@@ -37,7 +39,7 @@ country_sf <- sf::st_union(regions_sf) #não carregar, pois une todo o país
 plot(sf::st_geometry(country_sf))
 
 
-# 3. DOWNLOAD RIVERS
+# 3. DESCARREGAR RIOS
 #-------------------
 
 url <- "https://data.hydrosheds.org/file/HydroRIVERS/HydroRIVERS_v10_sa_shp.zip"
@@ -51,7 +53,7 @@ download.file(
 
 unzip(destfile)
 
-# 4. LOAD RIVERS
+# 4. CARREGAR RIOS
 #---------------
 
 filename <- list.files(
@@ -89,7 +91,7 @@ country_rivers <- sf::st_read(
 
 plot(sf::st_geometry(country_rivers))
 
-# 5. RIVER WIDTH
+# 5. LARGURA DO RIO
 #---------------
 
 sort(
@@ -133,7 +135,7 @@ dem_matrix <- rayshader::raster_to_matrix(
   dem_country
 )
 
-# 7. RENDER SCENE
+# 7. RENDERIZAR CENA
 #----------------
 
 
@@ -174,7 +176,7 @@ rayshader::render_camera(
   zoom = .75
 )
 
-# 8. RENDER OBJECT
+# 8. RENDERIZAR OBJETO
 #-----------------
 
 u <- "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/4k/photo_studio_loft_hall_4k.hdr"
@@ -199,7 +201,7 @@ rayshader::render_highquality(
   height = 500
 )
 
-# BONUS: ANNOTATE MAP
+# BONUS: ANOTAÇÕES DO MAPA
 #--------------------
 install.packages("magick")
 install.packages("scales")
@@ -209,7 +211,7 @@ library(scales)
 # load map
 map1 <- magick::image_read("ceará-3d-elevation-rivers.png") #mudar de acordo com o nome do mapa ja salvo na pasta
 
-# COLORS
+# CORES
 #----------
 
 cols <- rev(c("#276604", "#ddb746", "#ffd3af", "#ffeadb"))
@@ -217,11 +219,11 @@ cols <- rev(c("#276604", "#ddb746", "#ffd3af", "#ffeadb"))
 texture <- colorRampPalette(cols)(256)
 
 
-# Set text color
+# Definir a cor do texto
 title_color <- cols[4]
 text_color <- "grey20"
 
-# Title
+# TÍTULO
 
 map2 <- magick::image_annotate(
   map1, "Rios e Relevo",
@@ -230,7 +232,7 @@ map2 <- magick::image_annotate(
   size = 70, gravity = "northeast",
   location = "+50+100", weight = 500
 )
-#subtitle
+#subtitulo
 map3 <- magick::image_annotate(
   map2, "C E A R Á",
   font = "Georgia",
@@ -239,7 +241,7 @@ map3 <- magick::image_annotate(
   location = "+50+175", weight = 600
 )
 
-# caption 1 - author
+# legenda 1 - autor
 map4 <- magick::image_annotate(
   map3, "©2024 Lidia Castro",
   font = "Futura",
@@ -248,7 +250,7 @@ map4 <- magick::image_annotate(
   location = "+50+70"
 )
 
-# caption 2 - data source
+# legenda 2 - fonte de dados
 
 map5 <- magick::image_annotate(
   map4, "Data: World Wildlife Fund, Inc. (2006 - 2013) HydroSHEDS database http://www.hydrosheds.org",
